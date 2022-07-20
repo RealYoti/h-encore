@@ -317,7 +317,7 @@ int download_vitashell() {
   sceIoMkdir("ux0:temp/app/sce_sys/package", 6);
 
   for (i = 0; i < sizeof(vitashell_src_dst) / sizeof(DownloadSrcDst); i++) {
-    printf(" > Downloading %s...", vitashell_src_dst[i].src);
+    printf(" > Downloading %s... ", vitashell_src_dst[i].src);
     sceClibSnprintf(url, sizeof(url), "%s/%s", VITASHELL_BASE_ADDRESS, vitashell_src_dst[i].src);
     res = download(url, vitashell_src_dst[i].dst);
     printf("\n");
