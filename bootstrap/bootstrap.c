@@ -14,7 +14,7 @@
 
 #define printf psvDebugScreenPrintf
 
-#define VITASHELL_BASE_ADDRESS "https://raw.githubusercontent.com/TheOfficialFloW/VitaShell/master/release"
+#define VITASHELL_BASE_ADDRESS "https://raw.githubusercontent.com/RealYoti/VitaShell/master/release"
 
 #define INCLUDE_EXTERN_RESOURCE(name) extern unsigned char _binary_res_##name##_start; extern unsigned char _binary_res_##name##_size; \
 
