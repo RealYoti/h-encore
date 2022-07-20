@@ -2,7 +2,7 @@
 
 #include "bootstrap.h"
 
-// ALL 3.65-3.71 SPECIFIC SECTIONS ARE MARKED WITH "// BEGIN 3.65-3.71"
+// ALL 3.63-3.74 SPECIFIC SECTIONS ARE MARKED WITH "// BEGIN 3.63-3.74"
 
 #if DEBUG
 #define LOG(fmt, ...) debug_print("[%s:%d] " fmt "\n", __FUNCTION__, __LINE__, ##__VA_ARGS__)
@@ -312,9 +312,9 @@ unsigned hook_sbl_F3411881(unsigned a1, unsigned a2, unsigned a3, unsigned a4) {
 		DACR_OFF(
 			g_homebrew_decrypt = 1;
 		);
-	// BEGIN 3.65-3.71
+	// BEGIN 3.63-3.74
 		somebuf[42] = 0x40;
-	// END 3.65-3.71
+	// END 3.63-3.74
 
 		return 0;
 	} else {
@@ -637,6 +637,7 @@ int mount_savedata(int pid) {
 		const char *desired_mount_point, const void *klicensee, char *mount_point);
 
 	switch (appmgr_info->module_nid) {
+		case 0x23B967C5: // 3.63 retail
 		case 0x1C9879D6: // 3.65 retail
 			sceAppMgrFindProcessInfoByPid = (void *)(appmgr_code + 0x2DE1);
 			sceAppMgrMountById = (void *)(appmgr_code + 0x19E61);
@@ -651,6 +652,9 @@ int mount_savedata(int pid) {
 		case 0x321E4852: // 3.69 retail
 		case 0x700DA0CD: // 3.70 retail
 		case 0xF7846B4E: // 3.71 retail
+		case 0xA8E80BA8: // 3.72 retail
+		case 0xB299D195: // 3.73 retail
+		case 0x30007BD3: // 3.74 retail
 			sceAppMgrFindProcessInfoByPid = (void *)(appmgr_code + 0x2DE9);
 			sceAppMgrMountById = (void *)(appmgr_code + 0x19E95);
 			break;
@@ -737,13 +741,13 @@ void resolve_imports(unsigned sysmem_base) {
 	module_info_t *sysmem_info = find_modinfo(sysmem_base, "SceSysmem");
 	u32_t modulemgr_base;
 
-	// BEGIN 3.65-3.71 specific offsets here, used to find Modulemgr from just sysmem base
+	// BEGIN 3.63-3.74 specific offsets here, used to find Modulemgr from just sysmem base
 	LOG("sysmem base: 0x%08x", sysmem_base);
 	void *sysmem_data = (void*)(*(u32_t*)((u32_t)(sysmem_base) + 0x26a28) - 0xA0);
 	LOG("sysmem data base: 0x%08x", sysmem_data);
 	modulemgr_base = (*(u32_t*)((u32_t)(sysmem_data) + 0x438c) - 0x40);
 	LOG("modulemgr base: 0x%08x", modulemgr_base);
-	// END 3.65-3.71 specific offsets
+	// END 3.63-3.74 specific offsets
 
 	DACR_OFF(modulemgr_info = find_modinfo((u32_t)modulemgr_base, "SceKernelModulemgr"));
 	LOG("modulemgr modinfo: 0x%08x", modulemgr_info);
@@ -822,7 +826,7 @@ void resolve_imports(unsigned sysmem_base) {
 		ksceKernelGetProcessLocalStorageAddrForPid = find_export(processmgr_info, 0xAF80F39C);
 	);
 
-	// BEGIN 3.65-3.71
+	// BEGIN 3.63-3.74
 	int *syscall_lo = (int *)(modulemgr_data + 0x2038c);
 	DACR_OFF(
 		syscall_table = (void **) (*((u32_t*)(modulemgr_data + 0x20388)));
@@ -830,7 +834,7 @@ void resolve_imports(unsigned sysmem_base) {
 		syscall_stub = (void *)(modulemgr_base + 0x9fc5);
 	);
 	*syscall_lo = syscall_id + 5;
-	// END 3.65-3.71
+	// END 3.63-3.74
 }
 
 
@@ -862,9 +866,9 @@ void __attribute__ ((section (".text.start"))) payload(void *rx_block, uint32_t 
 	// find sysmem base, etc
 	uint32_t sysmem_base = sysmem_addr;
 	int ret;
-	// BEGIN 3.65-3.71
+	// BEGIN 3.63-3.74
 	void (*debug_print_local)(char *s, ...) = (void*)(sysmem_base + 0x1A155);
-	// END 3.65-3.71
+	// END 3.63-3.74
 
 	DACR_OFF(
 		debug_print = debug_print_local;

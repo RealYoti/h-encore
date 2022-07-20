@@ -504,6 +504,7 @@ int module_start(SceSize argc, const void *args) {
                                              passphrase_decrypt_patched);
           break;
         }
+        case 0xBB4B0A3E:   // retail 3.63 SceShell
         case 0x5549BF1F:   // retail 3.65 SceShell
         case 0x34B4D82E:   // retail 3.67 SceShell
         case 0x12DAC0F3: { // retail 3.68 SceShell
@@ -529,7 +530,10 @@ int module_start(SceSize argc, const void *args) {
         }
         case 0x0703C828:   // retail 3.69 SceShell
         case 0x2053B5A5:   // retail 3.70 SceShell
-        case 0xF476E785: { // retail 3.71 SceShell
+        case 0xF476E785:   // retail 3.71 SceShell
+        case 0x939FFBE9:   // retail 3.72 SceShell
+        case 0x734D476A:   // retail 3.73 SceShell
+        case 0x51CB6207: { // retail 3.74 SceShell
           g_hooks[3] = taiHookFunctionOffset(&g_update_check_hook, 
                                              info.modid, 
                                              0,         // segidx
