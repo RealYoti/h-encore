@@ -1,0 +1,41 @@
+os:
+  - linux
+dist: trusty
+sudo: required
+language: c
+
+script:
+  - curl https://api.github.com/repos/vitasdk/autobuilds/releases  | grep browser_download_url | grep linux | head -n 1 | cut -d '"' -f 4 | xargs wget
+  - tar xjf *.tar.bz2
+  - export VITASDK=$PWD/vitasdk
+  - export PATH=$VITASDK/bin:$PATH
+  - mkdir build && cd build
+  - cmake ../
+  - make
+  - cd ..
+  - mkdir -p output/lib
+  - mkdir -p output/include
+  - cp taihen.h output/include
+  - cp build/taihen-stubs/*.a output/lib/
+  - tar -C output -zcvf $PWD/taihen.tar.gz  .
+env:
+ global:
+  - TOP=$PWD
+  - PREFIX=$TOP/dist
+deploy:
+  provider: releases
+  api_key: $OAUTH 
+  file: 
+     - "build/taihen.skprx"
+     - "taihen.tar.gz"
+  skip_cleanup: true
+  on:
+    tags: true
+
+branches:
+  except:
+    - /^*-v[0-9]/
+
+notifications:
+  irc:
+    - "chat.freenode.net#vitasdk"

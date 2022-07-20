@@ -1,0 +1,57 @@
+taihen:
+  attributes: 0
+  version:
+    major: 1
+    minor: 1
+  main:
+    start: module_start
+    stop: module_stop
+    exit: module_exit
+  modules:
+    taihen:
+      syscall: true
+      functions:
+        - taiHookFunctionExportForUser
+        - taiHookFunctionImportForUser
+        - taiHookFunctionOffsetForUser
+        - taiGetModuleInfo
+        - taiHookRelease
+        - taiInjectAbs
+        - taiInjectDataForUser
+        - taiInjectRelease
+        - taiGetModuleExportFunc
+    taihenUnsafe:
+      syscall: true
+      functions:
+        - taiLoadKernelModule
+        - taiStartKernelModuleForUser
+        - taiLoadStartKernelModuleForUser
+        - taiLoadStartModuleForPidForUser
+        - taiStopKernelModuleForUser
+        - taiUnloadKernelModule
+        - taiStopUnloadKernelModuleForUser
+        - taiStopModuleForPidForUser
+        - taiUnloadModuleForPid
+        - taiStopUnloadModuleForPidForUser
+        - taiMemcpyUserToKernel
+        - taiMemcpyKernelToUser
+        - taiReloadConfig
+    taihenForKernel:
+      functions:
+        - taiHookFunctionAbs
+        - taiHookFunctionExportForKernel
+        - taiHookFunctionImportForKernel
+        - taiHookFunctionOffsetForKernel
+        - taiGetModuleInfoForKernel
+        - taiHookReleaseForKernel
+        - taiInjectAbsForKernel
+        - taiInjectDataForKernel
+        - taiInjectReleaseForKernel
+        - taiLoadPluginsForTitleForKernel
+        - taiReloadConfigForKernel
+    taihenModuleUtils:
+      functions:
+        - module_get_by_name_nid
+        - module_get_offset
+        - module_get_export_func
+        - module_get_import_func
